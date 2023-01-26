@@ -18,4 +18,18 @@ class ArraySortingSpec extends AnyWordSpec with Matchers {
     }
   }
 
+
+  "ArraySorting.Immutable.inSorted" when {
+    "called for an array with more than 1 elements" should {
+      "work correctly" in {
+
+        val ordering: (Int, Int) => Boolean = _ <= _
+        val unsortedArray = Array(4, 8, 3, 5, 7, 1, 2, 9, 6)
+        val expectedSortedArray = unsortedArray.sortWith(ordering)
+        val actualSortedArray = ArraySorting.Immutable.inSorted(unsortedArray, ordering)
+        actualSortedArray shouldBe expectedSortedArray
+      }
+    }
+  }
+
 }

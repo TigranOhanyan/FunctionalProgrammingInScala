@@ -1,10 +1,9 @@
 package part1.chapter2
 
 import scala.annotation.tailrec
+import Tree._
 
 sealed trait Tree[+A] {
-
-  def isLeaf: Boolean
 
   final def foldTail[B](init: B)(f: (B, A) => B): B = {
 
@@ -52,27 +51,29 @@ sealed trait Tree[+A] {
 
 }
 
-case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A] {
-  override val isLeaf = false
+case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+
+case class Leaf[A](value: A) extends Tree[A]
+
+
+object Tree {
+  sealed trait Path[A]
+
+  case class ToLeft[A](branch: Branch[A]) extends Path[A]
+
+  case object ToLeft {
+    def unapply[A](l: ToLeft[A]): Some[(Tree[A], Tree[A])] =
+      Some(l.branch.left, l.branch.right)
+  }
+
+  case class ToRight[A](branch: Branch[A]) extends Path[A]
+
+  case object ToRight {
+    def unapply[A](r: ToRight[A]): Some[(Tree[A], Tree[A])] =
+      Some(r.branch.left, r.branch.right)
+  }
+
+  case class Destination[A](value: A) extends Path[A]
 }
 
-case class Leaf[A](value: A) extends Tree[A] {
-  override val isLeaf = true
-}
 
-sealed trait Path[A]
-
-case class ToLeft[A](branch: Branch[A]) extends Path[A]
-case object ToLeft {
-  def unapply[A](l: ToLeft[A]): Some[(Tree[A], Tree[A])] =
-    Some(l.branch.left, l.branch.right)
-}
-
-case class ToRight[A](branch: Branch[A]) extends Path[A]
-
-case object ToRight {
-  def unapply[A](r: ToRight[A]): Some[(Tree[A], Tree[A])] =
-    Some(r.branch.left, r.branch.right)
-}
-
-case class Destination[A](value: A) extends Path[A]
