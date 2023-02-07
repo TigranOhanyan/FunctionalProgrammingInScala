@@ -6,9 +6,24 @@ import scala.reflect.ClassTag
 
 object ArraySorting {
 
+  def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean = {
+
+    @tailrec def loop(n: Int, previousElem: A): Boolean =
+      if (n >= as.length) true
+      else {
+        val currentElem = as(n)
+        if (ordered(previousElem, currentElem)) loop(n + 1, currentElem)
+        else false
+      }
+
+    if (as.length > 0) loop(1, as(0))
+    else true
+  }
+
+
   object Mutable {
 
-    def inSorted[A](as: Array[A], ordered: (A, A) => Boolean): Unit = {
+    def sorted[A](as: Array[A], ordered: (A, A) => Boolean): Unit = {
 
       def sort(start: Int, end: Int): Unit = {
         if (start < end) {
@@ -51,9 +66,9 @@ object ArraySorting {
 
   object Immutable {
 
-    sealed trait Path[A]
+    private sealed trait Path[A]
 
-    object Path {
+    private object Path {
 
       def tryGoToLeft[A](start: Int, end: Int): Path[A] = {
         val mid = (end + start) / 2
@@ -70,24 +85,16 @@ object ArraySorting {
         else
           Destination[A](mid + 1)
       }
-
-//      def tryGoToRight[A](start: Int, end: Int): Path[A] = {
-//        val mid = (start - end) / 2
-//        if (start < mid)
-//          ToRight[A](start, mid)
-//        else
-//          Destination[A](mid)
-//      }
     }
 
-    case class ToLeft[A](start: Int, end: Int) extends Path[A]
+    private case class ToLeft[A](start: Int, end: Int) extends Path[A]
 
-    case class ToRight[A](leftResult: Array[A], start: Int, end: Int)
-        extends Path[A]
+    private case class ToRight[A](leftResult: Array[A], start: Int, end: Int)
+      extends Path[A]
 
-    case class Destination[A](index: Int) extends Path[A]
+    private case class Destination[A](index: Int) extends Path[A]
 
-    def inSorted[A:ClassTag](as: Array[A], ordered: (A, A) => Boolean): Array[A] = {
+    def sorted[A:ClassTag](as: Array[A], ordered: (A, A) => Boolean): Array[A] = {
 
       def merge(left: Array[A], right: Array[A]): Array[A] = {
         val empty = Array.ofDim[A](left.length + right.length)
