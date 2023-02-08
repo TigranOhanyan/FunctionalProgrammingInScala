@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 
 object FibonacciNumber {
 
+  // 2.1
   def fib(n: Int): Int = n match {
     case 0 => 0
     case 1 => 1
