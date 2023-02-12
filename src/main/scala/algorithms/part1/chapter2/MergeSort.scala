@@ -1,6 +1,6 @@
 package algorithms.part1.chapter2
 
-import algorithms.part1.chapter2.util.syntax._
+import algorithms.util.syntax._
 
 import scala.annotation.tailrec
 import scala.reflect.ClassTag

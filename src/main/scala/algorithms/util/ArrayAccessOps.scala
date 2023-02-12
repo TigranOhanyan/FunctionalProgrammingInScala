@@ -1,4 +1,4 @@
-package algorithms.part1.chapter2.util
+package algorithms.util
 
 class ArrayAccessOps[T](val arr: Array[T]) extends AnyVal {
 
