@@ -1,5 +1,5 @@
 package algorithms.part1.chapter2
-import util.syntax._
+import algorithms.util.syntax._
 
 object InsertionSort {
 

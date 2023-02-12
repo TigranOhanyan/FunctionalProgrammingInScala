@@ -1,7 +1,5 @@
-package algorithms.part1.chapter2
+package algorithms
 
 package object util {
-
   object syntax extends ArrayAccessSyntax
-
 }

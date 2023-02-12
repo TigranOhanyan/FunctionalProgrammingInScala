@@ -1,6 +1,6 @@
 package algorithms.part1.chapter2
 
-import algorithms.part1.chapter2.util.syntax.accessSyntax
+import algorithms.util.syntax.accessSyntax
 
 import scala.reflect.ClassTag
 
